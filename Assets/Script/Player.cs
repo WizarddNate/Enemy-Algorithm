@@ -1,43 +1,56 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public float normalspeed = 1.5f;
-    public float sprintspeed = 100.0f;
-    public float speed = 0.0f;
-    //In C#, all variables are private by default 
-    Rigidbody2D rb2d;
+    private bool isMoving; //keeps the player from making multiple movement commands at once
+    private Vector2 origPos, targetPos;
+    private float timeToMove = 0.2f;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        rb2d = gameObject.GetComponent<Rigidbody2D>();
-        if (!rb2d) // (rb2d == null)
-            Debug.LogWarning("Rigidbody not found on GameObject " + gameObject.name);
-    }
 
-    // Update is called once per frame
+    //public float speed = 5;
+
+
     void Update()
     {
+        if (Input.GetKey(KeyCode.W) && !isMoving)
+            StartCoroutine(MovePlayer(Vector2.up));
 
-        speed = normalspeed;
+        if (Input.GetKey(KeyCode.A) && !isMoving)
+            StartCoroutine(MovePlayer(Vector2.left));
 
-        float h = Input.GetAxis("Horizontal");
-        float v = Input.GetAxis("Vertical");
-        Vector2 inputDirection = new Vector2(h, v);
-        rb2d.AddForce(inputDirection * speed);
-   
+        if (Input.GetKey(KeyCode.S) && !isMoving)
+            StartCoroutine(MovePlayer(Vector2.down));
 
-       /// sprint function ///
-        //if (Input.GetButton("Fire3"))
-        //{
-        //    speed = sprintspeed;
-        //}
-        //else
-        //{
-        //    speed = normalspeed;
-        //}
+        if (Input.GetKey(KeyCode.D) && !isMoving)
+            StartCoroutine(MovePlayer(Vector2.right));
+
     }
+
+    private IEnumerator MovePlayer(Vector2 direction)
+    {
+        isMoving = true;
+
+        float elapsedTime = 0;
+
+        origPos = transform.position;
+        targetPos = origPos + direction;
+
+        while (elapsedTime < timeToMove)
+        {
+        transform.position = Vector2.Lerp(origPos, targetPos, (elapsedTime/timeToMove));
+            elapsedTime = Time.deltaTime;
+            yield return null;
+        }
+
+        transform.position = targetPos;
+
+        isMoving = false;
+    }
+
 }
+
