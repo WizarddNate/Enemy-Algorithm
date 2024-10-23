@@ -180,7 +180,7 @@ MonoBehaviour:
   m_MinSize: {x: 400, y: 100}
   m_MaxSize: {x: 32384, y: 16192}
   vertical: 0
-  controlID: 134
+  controlID: 71
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -273,8 +273,8 @@ MonoBehaviour:
     y: 0
     width: 386.66663
     height: 926
-  m_MinSize: {x: 275, y: 50}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 276, y: 71}
+  m_MaxSize: {x: 4001, y: 4021}
   m_ActualView: {fileID: 17}
   m_Panes:
   - {fileID: 17}
@@ -547,7 +547,7 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: a6010000
       m_LastClickedID: 0
-      m_ExpandedIDs: 1cfbffff
+      m_ExpandedIDs: fcfaffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -673,14 +673,14 @@ MonoBehaviour:
   m_LastFolders:
   - Assets
   m_LastFoldersGridSize: -1
-  m_LastProjectPath: C:\Users\Anast\OneDrive\Documents\GitHub\Enemy-Algorithm
+  m_LastProjectPath: C:\Users\dumba\OneDrive\Documents\Unity Games\Enemy Algorithm
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 76610000
-    m_LastClickedID: 24950
-    m_ExpandedIDs: 000000007661000000ca9a3bffffff7f
+    m_SelectedIDs: 98610000
+    m_LastClickedID: 24984
+    m_ExpandedIDs: 000000007a6100007c6100007e61000080610000826100008461000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -708,7 +708,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 0000000076610000
+    m_ExpandedIDs: 000000007a6100007c6100007e610000806100008261000084610000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1146,9 +1146,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 2.341438, y: 1.6856366, z: -0.16399756}
+    m_Target: {x: -2.500234, y: 0.7950314, z: -0.050271243}
     speed: 2
-    m_Value: {x: 2.341438, y: 1.6856366, z: -0.16399756}
+    m_Value: {x: -2.8749835, y: 0.6979702, z: -0.053048123}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -1198,9 +1198,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 17.265823
+    m_Target: 5.89317
     speed: 2
-    m_Value: 17.265823
+    m_Value: 6.1708584
   m_Ortho:
     m_Target: 1
     speed: 2

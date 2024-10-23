@@ -236,8 +236,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e4f504245bb0564e8e1e9d277e7e6c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _width: 16
-  _height: 9
+  _width: 20
+  _height: 12
   _tilePrefab: {fileID: 1297808475639802405, guid: e97231cdbd8f592489105216dce75554, type: 3}
   _cam: {fileID: 519420032}
 --- !u!4 &170575599
@@ -280,7 +280,7 @@ Transform:
   m_GameObject: {fileID: 269861845}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.5, y: 1, z: -0.5}
+  m_LocalPosition: {x: -8.78, y: 0, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -815,7 +815,7 @@ Transform:
   m_GameObject: {fileID: 1610069032}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6, y: 3, z: -0.5}
+  m_LocalPosition: {x: 0.08, y: 2.53, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
