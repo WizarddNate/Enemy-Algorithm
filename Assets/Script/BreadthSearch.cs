@@ -2,38 +2,57 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class BreadthSearch : MonoBehaviour
 {
-    
+
     public GameObject inky;
     public GameObject target;
     public int length;
     public int width;
 
     Queue<Vector2Int> frontier = new Queue<Vector2Int>();
- 
+
     HashSet<Vector2Int> visited = new HashSet<Vector2Int>();
 
-    public void BreadthFirstSearch()
+    Dictionary<Vector2Int, List<Vector2Int>> parent = new Dictionary<Vector2Int, List<Vector2Int>>();
+    Vector2Int currentpos;
+    Vector2Int targetpos;
+   
+
+    public List<Vector2Int> GetNewPath(Vector2Int current)
+    {
+        BreadthFirstSearch(current);
+        return BuildPath();
+    }
+
+    public void BreadthFirstSearch(Vector2Int current)
     {
         frontier.Clear();
         visited.Clear();
-        Vector2Int currentpos = new Vector2Int((int)Mathf.Round(inky.transform.position.x), (int)Mathf.Round(inky.transform.position.y));
-        Vector2Int targetpos = new Vector2Int((int)Mathf.Round(target.transform.position.x), (int)Mathf.Round(target.transform.position.y));
+        
+        bool isRunning = true;
 
-        while (currentpos != targetpos)
+        frontier.Enqueue(current);
+        visited.Add(current);
+
+        while (isRunning)
         {
-            ExploreNeighbors(currentpos);
+            currentpos = frontier.Dequeue();
+            ExploreNeighbors();
+            if (currentpos == targetpos)
+            {
+                isRunning = false;
+            }
         }
 
     }
-    public void ExploreNeighbors(Vector2Int start)
+    public void ExploreNeighbors()
     {
-        frontier.Enqueue(start);
-        visited.Add(start);
 
         List<Vector2Int> directions = new List<Vector2Int>
         {
@@ -42,21 +61,26 @@ public class BreadthSearch : MonoBehaviour
             new Vector2Int(0, -1),  // Down
             new Vector2Int(-1, 0), // Left
         };
-
-
-        while (frontier.Count <= length*width)
+        foreach (var direction in directions)
         {
-            Vector2Int current = frontier.Dequeue();
-            Debug.Log($"{current.x}, {current.y}");
-            foreach (var direction in directions)
+            List<Vector2Int> neighbors = new List<Vector2Int>();
+            Vector2Int neighbor = currentpos + direction;
+            if (!visited.Contains(neighbor))
             {
-                Vector2Int neighbor = current + direction;
-                if (!visited.Contains(neighbor))
-                {
-                    visited.Add(neighbor);
-                    frontier.Enqueue(neighbor);
-                }
+                neighbors.Add(neighbor);
+                visited.Add(neighbor);
+                frontier.Enqueue(neighbor);
+                parent[currentpos] = neighbors;
             }
         }
+
+    }
+
+    List<Vector2Int> BuildPath()
+    { 
+        List<Vector2Int> path = new List<Vector2Int>();
+        path = parent[targetpos];   
+        path.Reverse();
+        return path;
     }
 }
