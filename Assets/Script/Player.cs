@@ -7,50 +7,31 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    private bool isMoving; //keeps the player from making multiple movement commands at once
-    private Vector2 origPos, targetPos;
-    private float timeToMove = 0.2f;
+    public float moveSpeed = 5f;
+    public Transform movePoint;
 
-
-    //public float speed = 5;
-
-
-    void Update()
+    private void Start()
     {
-        if (Input.GetKey(KeyCode.W) && !isMoving)
-            StartCoroutine(MovePlayer(Vector2.up));
-
-        if (Input.GetKey(KeyCode.A) && !isMoving)
-            StartCoroutine(MovePlayer(Vector2.left));
-
-        if (Input.GetKey(KeyCode.S) && !isMoving)
-            StartCoroutine(MovePlayer(Vector2.down));
-
-        if (Input.GetKey(KeyCode.D) && !isMoving)
-            StartCoroutine(MovePlayer(Vector2.right));
-
+        movePoint.parent = null;
     }
 
-    private IEnumerator MovePlayer(Vector2 direction)
+    private void Update()
     {
-        isMoving = true;
+        transform.position = Vector3.MoveTowards(transform.position, movePoint.position, moveSpeed * Time.deltaTime);
 
-        float elapsedTime = 0;
-
-        origPos = transform.position;
-        targetPos = origPos + direction;
-
-        while (elapsedTime < timeToMove)
+        if (Vector3.Distance(transform.position, movePoint.position) == 0)
         {
-        transform.position = Vector2.Lerp(origPos, targetPos, (elapsedTime/timeToMove));
-            elapsedTime = Time.deltaTime;
-            yield return null;
+
+            if (Mathf.Abs(Input.GetAxisRaw("Horizontal")) == 1f)
+            {
+                movePoint.position += new Vector3(Input.GetAxisRaw("Horizontal"), 0f, 0f);
+            }
+
+            if (Mathf.Abs(Input.GetAxisRaw("Vertical")) == 1f)
+            {
+                movePoint.position += new Vector3(0f, Input.GetAxisRaw("Vertical"), 0f);
+            }
         }
-
-        transform.position = targetPos;
-
-        isMoving = false;
     }
-
 }
 
