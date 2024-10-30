@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class LinarSearch : MonoBehaviour
 {
+    public float speed;
 
-    public Transform target;
+    int playerX = 8;
+    //int playerY = 4;
     // Start is called before the first frame update
     void Start()
     {
@@ -13,9 +15,22 @@ public class LinarSearch : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        var playerY = target.position.y;
+        Vector3 newPos = transform.position;
+        newPos.x += speed;
+        //transform.position = newPos;
+
+        for(int i = 0; i<14; i++){
+            if( i == playerX){
+                transform.position = newPos;
+                 if (newPos.x >= 14){
+                  transform.position = new Vector3(0,0,-0.5f);
+                 }
+            }
+            
+        }
+
         // make a function to find playerlocation
         // for(int i = 0; < arr.Length; i++){
         //     #if (arr[i] == target){
