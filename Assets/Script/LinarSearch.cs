@@ -4,42 +4,39 @@ using UnityEngine;
 
 public class LinarSearch : MonoBehaviour
 {
-    public float speed;
-
-    int playerX = 8;
-    //int playerY = 4;
+    public float speed = 1.0f;
+    private GameObject player;
     // Start is called before the first frame update
     void Start()
     {
+        player = FindPlayer();
         //ignor unless some code for staring postion
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
-        Vector3 newPos = transform.position;
-        newPos.x += speed;
-        //transform.position = newPos;
-
-        for(int i = 0; i<14; i++){
-            if( i == playerX){
-                transform.position = newPos;
-                 if (newPos.x >= 14){
-                  transform.position = new Vector3(0,0,-0.5f);
-                 }
-            }
-            
+        if(player != null){
+            MoveTowards(player.transform.position);
         }
 
-        // make a function to find playerlocation
-        // for(int i = 0; < arr.Length; i++){
-        //     #if (arr[i] == target){
-        //         #return i;
-        //     }
-        //     #if it cannot find player just dont move
-        // }
+    }
 
-        // #once location found, move twords player
-        // #check player location => move one space colser
+    GameObject FindPlayer(){
+        GameObject[] allObjects = GameObject.FindObjectsOfType<GameObject>();
+
+        foreach(GameObject obj in allObjects){
+            if(obj.CompareTag("Player")){   //tag "player"
+                return obj;
+            }
+        }
+        //if player not found
+        return null;
+    }
+
+    void MoveTowards(Vector3 targetPosition){
+        float step = speed*Time.deltaTime;
+        //move towards player
+        transform.position = Vector3.MoveTowards(transform.position, targetPosition, step);
     }
 }
