@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEditor;
@@ -9,12 +10,6 @@ using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class BreadthSearch : MonoBehaviour
 {
-
-    public GameObject inky;
-    public GameObject target;
-    public int length;
-    public int width;
-
     Queue<Vector2Int> frontier = new Queue<Vector2Int>();
 
     HashSet<Vector2Int> visited = new HashSet<Vector2Int>();
@@ -22,8 +17,12 @@ public class BreadthSearch : MonoBehaviour
     Dictionary<Vector2Int, List<Vector2Int>> parent = new Dictionary<Vector2Int, List<Vector2Int>>();
     Vector2Int currentpos;
     Vector2Int targetpos;
-   
 
+    public void SetNewDestination(Vector2Int startcoordinates, Vector2Int targetcoordinates)
+    {
+        Vector2Int currentpos = startcoordinates;
+        Vector2Int targetpos = targetcoordinates;
+    }
     public List<Vector2Int> GetNewPath(Vector2Int current)
     {
         BreadthFirstSearch(current);
@@ -61,16 +60,19 @@ public class BreadthSearch : MonoBehaviour
             new Vector2Int(0, -1),  // Down
             new Vector2Int(-1, 0), // Left
         };
-        foreach (var direction in directions)
+        List<Vector2Int> neighbors = new List<Vector2Int>();
+        foreach (Vector2Int direction in directions)
         {
-            List<Vector2Int> neighbors = new List<Vector2Int>();
+            
             Vector2Int neighbor = currentpos + direction;
             if (!visited.Contains(neighbor))
             {
+
                 neighbors.Add(neighbor);
                 visited.Add(neighbor);
                 frontier.Enqueue(neighbor);
                 parent[currentpos] = neighbors;
+                
             }
         }
 
