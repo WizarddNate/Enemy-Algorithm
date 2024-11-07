@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Unity.VisualScripting;
@@ -20,17 +21,19 @@ public class BreadthSearch : MonoBehaviour
 
     public void SetNewDestination(Vector2Int startcoordinates, Vector2Int targetcoordinates)
     {
-        Vector2Int currentpos = startcoordinates;
-        Vector2Int targetpos = targetcoordinates;
+        currentpos = startcoordinates;
+        targetpos = targetcoordinates;
     }
     public List<Vector2Int> GetNewPath(Vector2Int current)
     {
         BreadthFirstSearch(current);
         return BuildPath();
+        
     }
 
     public void BreadthFirstSearch(Vector2Int current)
     {
+ 
         frontier.Clear();
         visited.Clear();
         
@@ -45,6 +48,7 @@ public class BreadthSearch : MonoBehaviour
             ExploreNeighbors();
             if (currentpos == targetpos)
             {
+
                 isRunning = false;
             }
         }
@@ -55,15 +59,16 @@ public class BreadthSearch : MonoBehaviour
 
         List<Vector2Int> directions = new List<Vector2Int>
         {
-            new Vector2Int(0, 1),  // Up
-            new Vector2Int(1, 0),  // Right
             new Vector2Int(0, -1),  // Down
             new Vector2Int(-1, 0), // Left
+            new Vector2Int(0, 1),  // Up
+            new Vector2Int(1, 0),  // Right
+            
         };
-        List<Vector2Int> neighbors = new List<Vector2Int>();
+        
         foreach (Vector2Int direction in directions)
         {
-            
+            List<Vector2Int> neighbors = new List<Vector2Int>();
             Vector2Int neighbor = currentpos + direction;
             if (!visited.Contains(neighbor))
             {
@@ -72,7 +77,7 @@ public class BreadthSearch : MonoBehaviour
                 visited.Add(neighbor);
                 frontier.Enqueue(neighbor);
                 parent[currentpos] = neighbors;
-                
+
             }
         }
 
