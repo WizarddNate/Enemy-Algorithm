@@ -11,39 +11,45 @@ using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class BreadthSearch : MonoBehaviour
 {
-    Queue<Vector2Int> frontier = new Queue<Vector2Int>();
+    Queue<Vector2> frontier = new Queue<Vector2>();
 
-    HashSet<Vector2Int> visited = new HashSet<Vector2Int>();
+    HashSet<Vector2> visited = new HashSet<Vector2>();
+    
+    Dictionary<Vector2, List<Vector2>> parent = new Dictionary<Vector2, List<Vector2>>();
+    Vector2 currentpos;
+    Vector2 targetpos;
 
-    Dictionary<Vector2Int, List<Vector2Int>> parent = new Dictionary<Vector2Int, List<Vector2Int>>();
-    Vector2Int currentpos;
-    Vector2Int targetpos;
 
-    public void SetNewDestination(Vector2Int startcoordinates, Vector2Int targetcoordinates)
+    // sets the player pos and target pos
+    public void SetNewDestination(Vector2 startcoordinates, Vector2 targetcoordinates)
     {
         currentpos = startcoordinates;
         targetpos = targetcoordinates;
     }
-    public List<Vector2Int> GetNewPath(Vector2Int current)
+    // Generates the path
+    public List<Vector2> GetNewPath(Vector2 current)
     {
         BreadthFirstSearch(current);
         return BuildPath();
-        
     }
-
-    public void BreadthFirstSearch(Vector2Int current)
+    // the breadth search algorithm
+    public void BreadthFirstSearch(Vector2 current)
     {
- 
+        // clear the queue, visited, and path
         frontier.Clear();
         visited.Clear();
+        parent.Clear();
         
         bool isRunning = true;
 
+        // queue the current position and mark as visited
         frontier.Enqueue(current);
         visited.Add(current);
 
+        // explore all neighbors (it looks bad but I get an error otherwise)
         while (isRunning)
         {
+            // dequeue a neighbor
             currentpos = frontier.Dequeue();
             ExploreNeighbors();
             if (currentpos == targetpos)
@@ -56,20 +62,25 @@ public class BreadthSearch : MonoBehaviour
     }
     public void ExploreNeighbors()
     {
-
-        List<Vector2Int> directions = new List<Vector2Int>
+        // list of directions
+        List<Vector2> directions = new List<Vector2>
         {
-            new Vector2Int(0, -1),  // Down
-            new Vector2Int(-1, 0), // Left
-            new Vector2Int(0, 1),  // Up
-            new Vector2Int(1, 0),  // Right
-            
+            new Vector2(0, 0.5f),  // Up
+            new Vector2(0.25f, 0),  // Right
+            new Vector2(0, -0.5f),  // Down
+            new Vector2(-0.25f, 0), // Left
         };
         
-        foreach (Vector2Int direction in directions)
+        // loop through each direction
+        foreach (Vector2 direction in directions)
         {
-            List<Vector2Int> neighbors = new List<Vector2Int>();
-            Vector2Int neighbor = currentpos + direction;
+            // create a list to hold all neighbors
+            List<Vector2> neighbors = new List<Vector2>();
+
+            // create a neighbor by adding a direction to it
+            Vector2 neighbor = currentpos + direction;
+            
+            // if not visited add to neighbors, visited, the queue, and update the path
             if (!visited.Contains(neighbor))
             {
 
@@ -83,9 +94,11 @@ public class BreadthSearch : MonoBehaviour
 
     }
 
-    List<Vector2Int> BuildPath()
+    List<Vector2> BuildPath()
     { 
-        List<Vector2Int> path = new List<Vector2Int>();
+        List<Vector2> path = new List<Vector2>();
+
+        // grab the path and reverse it beacuase it builds it backwards
         path = parent[targetpos];   
         path.Reverse();
         return path;
