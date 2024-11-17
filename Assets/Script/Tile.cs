@@ -7,9 +7,12 @@ public class Tile : MonoBehaviour
     [SerializeField] private Color _baseColor, _offsetColor;
     [SerializeField] private SpriteRenderer _renderer;
 
-    //changes the color of offset tiles
-    public void Init(bool isOffset)
+    public bool walkable = true; //this tells the dfs algorithm if a tile is walkable or not
+
+    //changes the color of offset tiles and a walkable or blocked status
+    public void Init(bool isOffset,bool walkable)
     {
-        _renderer.color = isOffset ? _offsetColor : _baseColor;
+        this.walkable = walkable;
+        _renderer.color = walkable ? (isOffset ? _offsetColor : _baseColor) : Color.black; // black represents the blocked tiles 
     }
 }
