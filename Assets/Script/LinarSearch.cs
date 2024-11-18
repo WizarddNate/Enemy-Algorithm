@@ -5,45 +5,44 @@ using UnityEngine;
 public class LinarSearch : MonoBehaviour
 {
     public float speed = 1.0f;
-    private GameObject player;
-    private GameObject moveTo;
+    private bool LinBool;
 
-    int[] array = new int[] {1,2,3,4,5};
+    int[] xarray = new int[] {1,2,3,4,5,6,7,8,9,10,11,12,13,14}; //array for all x values on the grid
+    int[] yarray = new int[] {1,2,3,4,5,6,7,8,9};  //array for all y valuse on the grid
+
     // Start is called before the first frame update
     void Start()
     {
-       player = FindPlayer(); //find the player game object
-       //moveTo = Linear();
-       Debug.Log((Linear(array, 3)).ToString());
+
+       //Debug.Log((Linear(xarray,yarray,5, 8)).ToString()); //just to check that the search works
 
     }
 
     void Update(){
-        if(player != null){
-            //Linear(player.transform.position);
-
-        }
+        LinBool = Linear(xarray, yarray, 7, 6); //use the linear search to check if the player is within grid
+        MoveTo(LinBool, 7,6); // if linbool = true; move to the position
 
     }
 
-    GameObject FindPlayer(){ //find the player game object (and take its position)
-        GameObject[] allObjects = GameObject.FindObjectsOfType<GameObject>();
-        foreach(GameObject obj in allObjects){
-            if(obj.CompareTag("Player")){   //tag "player"
-                return obj;
-            }
-        }
-        //if player not found
-        return null;
-    }
-
-    bool Linear(int[] array, int key){
-        for(int x = 0; x<array.Length; x++){
-            if(array[x] == key){
-                return true;
+    bool Linear(int[] xarray, int[]yarray, int xkey, int ykey){
+        for(int x = 0; x<xarray.Length; x++){
+            if(xarray[x] == xkey){
+                for(int y = 0; y<yarray.Length; y++){
+                    if(yarray[y] == ykey){
+                        return true;
+                    }
+                }
             }
         }
         return false;
+    }
+
+    void MoveTo(bool go, int xpos, int ypos){
+        float step = speed*Time.deltaTime;
+        Vector2 targetPosition = new Vector2(xpos, ypos);
+        if(go == true){
+            transform.position = Vector2.MoveTowards(transform.position, targetPosition, step);
+        }
     }
 
     // void Linear(Vector3 targetPosition){
