@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,26 +13,39 @@ using static UnityEngine.RuleTile.TilingRuleOutput;
 public class BreadthSearch : MonoBehaviour
 {
     Queue<Vector2> frontier = new Queue<Vector2>();
-
-    HashSet<Vector2> visited = new HashSet<Vector2>();
-    
+    HashSet<Tile> visited = new HashSet<Tile>();
     Dictionary<Vector2, List<Vector2>> parent = new Dictionary<Vector2, List<Vector2>>();
     Vector2 currentpos;
     Vector2 targetpos;
+    GridManager grid;
 
+    List<Vector2> directions = new List<Vector2>
+    {
+        Vector2.up,
+        Vector2.down,
+        Vector2.left,
+        Vector2.right,
+    };
 
     // sets the player pos and target pos
+    public void Awake()
+    {
+        grid = FindObjectOfType<GridManager>();
+    }
+
     public void SetNewDestination(Vector2 startcoordinates, Vector2 targetcoordinates)
     {
         currentpos = startcoordinates;
         targetpos = targetcoordinates;
     }
+
     // Generates the path
-    public List<Vector2> GetNewPath(Vector2 current)
+    public Dictionary<Vector2, List<Vector2>> GetNewPath(Vector2 current)
     {
         BreadthFirstSearch(current);
         return BuildPath();
     }
+
     // the breadth search algorithm
     public void BreadthFirstSearch(Vector2 current)
     {
@@ -39,68 +53,75 @@ public class BreadthSearch : MonoBehaviour
         frontier.Clear();
         visited.Clear();
         parent.Clear();
-        
-        bool isRunning = true;
 
         // queue the current position and mark as visited
         frontier.Enqueue(current);
-        visited.Add(current);
+        visited.Add(grid.GetTileAtPosition(current));
 
-        // explore all neighbors (it looks bad but I get an error otherwise)
-        while (isRunning)
+        // Initialize the path for the start position
+        parent[current] = new List<Vector2> { current };
+
+        while (frontier.Count > 0)
         {
             // dequeue a neighbor
             currentpos = frontier.Dequeue();
             ExploreNeighbors();
-            if (currentpos == targetpos)
-            {
-
-                isRunning = false;
-            }
         }
-
     }
+
     public void ExploreNeighbors()
     {
-        // list of directions
-        List<Vector2> directions = new List<Vector2>
-        {
-            new Vector2(0, 0.5f),  // Up
-            new Vector2(0.25f, 0),  // Right
-            new Vector2(0, -0.5f),  // Down
-            new Vector2(-0.25f, 0), // Left
-        };
-        
+        List<Tile> neighbors = new List<Tile>();
+
         // loop through each direction
         foreach (Vector2 direction in directions)
         {
-            // create a list to hold all neighbors
-            List<Vector2> neighbors = new List<Vector2>();
-
             // create a neighbor by adding a direction to it
             Vector2 neighbor = currentpos + direction;
-            
-            // if not visited add to neighbors, visited, the queue, and update the path
-            if (!visited.Contains(neighbor))
+            Tile neighborTile = grid.GetTileAtPosition(neighbor);
+
+            if (neighborTile == null || !neighborTile.walkable)
             {
-
-                neighbors.Add(neighbor);
-                visited.Add(neighbor);
-                frontier.Enqueue(neighbor);
-                parent[currentpos] = neighbors;
-
+                continue;
             }
+
+            neighbors.Add(neighborTile);
         }
 
+        foreach (Tile neighbor in neighbors)
+        {
+            // If not visited, add to visited, enqueue and update the parent
+            if (!visited.Contains(neighbor))
+            {
+                visited.Add(neighbor);
+                frontier.Enqueue(neighbor.coords);
+
+                // Record the full path to the current Tile
+                List<Vector2> pathToNeighbor = new List<Vector2>(parent[currentpos]);
+                pathToNeighbor.Add(neighbor.coords);
+                parent[neighbor.coords] = pathToNeighbor;
+            }
+        }
     }
 
-    List<Vector2> BuildPath()
-    { 
-        List<Vector2> path = new List<Vector2>();
+    // Builds the full path to the target, if it exists
+    Dictionary<Vector2, List<Vector2>> BuildPath()
+    {
+        Dictionary<Vector2, List<Vector2>> result = new Dictionary<Vector2, List<Vector2>>();
 
-        // grab the path and reverse it beacuase it builds it backwards
-        path = parent[targetpos];   
-        path.Reverse();
-        return path;
+        // If the target exists in the parent dictionary, return the path
+        if (parent.ContainsKey(targetpos))
+        {
+            List<Vector2> fullPath = parent[targetpos];
+            result[targetpos] = fullPath;
+        }
+        else
+        {
+            // If no path found, return an empty dictionary
+            result[targetpos] = new List<Vector2>();
+        }
+
+        return result;
     }
 }
+

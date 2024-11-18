@@ -5,56 +5,65 @@ using UnityEngine;
 
 public class Inky : MonoBehaviour
 {
-    public GameObject self;
     public GameObject target;
     public float speed = 2.0f;
     BreadthSearch pathfinder;
+    bool running = false;
 
-    // grabbing the breadth search as it starts
     private void Awake()
     {
         pathfinder = GetComponent<BreadthSearch>();
     }
 
-    // call it at a consistent frame rate
+
     void FixedUpdate()
     {
-        // start following the generated path
-        if (pathfinder != null)
+        if (pathfinder != null && !running)
         {
             StartCoroutine(FollowPath());
         }
+        
     }
 
     IEnumerator FollowPath()
     {
+        running = true;
         //measure the processing speed to generate a path
-        //Stopwatch stopwatch = new Stopwatch();
-        //stopwatch.Start();
+        Stopwatch stopwatch = new Stopwatch();
+        stopwatch.Start();
+        
+        // Grabbing the current position and target position
+        Vector3 currentPos = transform.position;
+        Vector3 targetPos = target.transform.position;
 
-        // grabbing the current pos and the player pos
-        Vector2 currentpos = new Vector2((float)Mathf.Round(self.transform.position.x), (float)Mathf.Round(self.transform.position.y));
-        Vector2 targetpos = new Vector2((float)Mathf.Round(target.transform.position.x), (float)Mathf.Round(target.transform.position.y));
+        // Setting the current position and target position for the pathfinder
+        pathfinder.SetNewDestination(currentPos, targetPos);
 
-        // setting the current pos and target pos
-        pathfinder.SetNewDestination(currentpos, targetpos);
-
-        // grabbing the new path from current pos
-        List<Vector2> path = pathfinder.GetNewPath(currentpos);
-
+        // Grabbing the new path from the current position
+        Dictionary<Vector2, List<Vector2>> pathDict = pathfinder.GetNewPath(currentPos);
+        
         // total time to generate
-        //stopwatch.Stop();
-        //UnityEngine.Debug.Log("Pathfinding time: " + stopwatch.ElapsedMilliseconds + " ms");
-
-        for (int i = 0; i < path.Count; i++)
+        stopwatch.Stop();
+        UnityEngine.Debug.Log($"Pathfinding time: {stopwatch.ElapsedMilliseconds} ms");
+        
+        // If the path dictionary contains the target get the path
+        if (pathDict.ContainsKey(targetPos))
         {
-            // looping throught the coords and moving towards the player 
-            Vector2 coords = path[i];
-            transform.position = Vector3.MoveTowards(transform.position, new Vector3(coords.x, coords.y, 0), Time.deltaTime * speed);
-            //UnityEngine.Debug.Log($"Path: {string.Join(", ", path)}");
+            List<Vector2> path = pathDict[targetPos];
 
-
-            yield return null;
+            // Move along the path
+            for (int i = 0; i < path.Count; i++)
+            {
+                Vector3 nextPos = new Vector3(path[i].x, path[i].y, transform.position.z);
+                while (Vector3.Distance(transform.position, nextPos) > 0.1f) 
+                {
+                    transform.position = Vector3.MoveTowards(transform.position, nextPos, Time.deltaTime * speed);
+                    yield return null;
+                }
+            }
         }
+
+        running = false;
+        yield return null;
     }
 }

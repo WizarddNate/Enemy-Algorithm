@@ -25,7 +25,7 @@ public class GridManager : MonoBehaviour
             {
                 var spawnedTile = Instantiate(_tilePrefab, new Vector3(x, y), Quaternion.identity);
                 spawnedTile.name = $"Tile {x} {y}";
-
+                spawnedTile.coords = new Vector3(x,y);
                 bool walkable = Random.value > 0.2f; //randomly determines if a tile is walkable
                 var isOffset = ((x + y) % 2 == 1);
                 spawnedTile.Init(isOffset,walkable); //call function in the Tile script
@@ -39,14 +39,16 @@ public class GridManager : MonoBehaviour
     //gets a tile at a specific position
     public Tile GetTileAtPosition(Vector3 position)
     {
-        int x = Mathf.FloorToInt(position.x);
-        int y = Mathf.FloorToInt(position.y);
+        int x = Mathf.RoundToInt(position.x);
+        int y = Mathf.RoundToInt(position.y);
 
         if (x>=0 && x<_width && y>=0 && y < _height)
         {
             return _grid[x, y];
 
         }
+        //Debug.Log($"Out of bounds: ({x}, {y})");
         return null; // will return null if its out of bounds
     }
+
 }

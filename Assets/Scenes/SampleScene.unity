@@ -819,7 +819,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc096df195960af4cbe6d000ef5da0df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  self: {fileID: 989763049}
   target: {fileID: 1610069032}
   speed: 2
 --- !u!212 &1337750645 stripped
