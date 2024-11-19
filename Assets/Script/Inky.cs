@@ -2,23 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
-
+using TMPro;
 public class Inky : MonoBehaviour
 {
     public GameObject target;
     public float speed = 2.0f;
     BreadthSearch pathfinder;
     bool running = false;
-
-    private void Awake()
+    private InkyTimer timerText;
+    
+    private void Start()
     {
         pathfinder = GetComponent<BreadthSearch>();
+        timerText = FindObjectOfType<InkyTimer>();
     }
 
 
     void FixedUpdate()
     {
-        if (pathfinder != null && !running)
+        if (pathfinder != null && timerText!= null && !running)
         {
             StartCoroutine(FollowPath());
         }
@@ -44,8 +46,11 @@ public class Inky : MonoBehaviour
         
         // total time to generate
         stopwatch.Stop();
-        UnityEngine.Debug.Log($"Pathfinding time: {stopwatch.ElapsedMilliseconds} ms");
-        
+        float pathFindingTime = stopwatch.ElapsedMilliseconds;
+        timerText.ChangeTime(pathFindingTime);
+        //UnityEngine.Debug.Log($"Pathfinding time: {stopwatch.ElapsedMilliseconds} ms");
+        stopwatch.Reset();
+
         // If the path dictionary contains the target get the path
         if (pathDict.ContainsKey(targetPos))
         {
@@ -62,7 +67,6 @@ public class Inky : MonoBehaviour
                 }
             }
         }
-
         running = false;
         yield return null;
     }
