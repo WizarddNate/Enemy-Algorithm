@@ -133,6 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 72087007}
   - component: {fileID: 72087008}
+  - component: {fileID: 72087009}
   m_Layer: 0
   m_Name: Blinky
   m_TagString: Ghost
@@ -207,6 +208,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &72087009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 72087006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924542b2a83e03049b94816e48bd5263, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  graph: []
 --- !u!1 &170575597
 GameObject:
   m_ObjectHideFlags: 0

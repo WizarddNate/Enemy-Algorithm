@@ -9,16 +9,16 @@ public class GridManager : MonoBehaviour
     [SerializeField] private Tile _tilePrefab;
 
     [SerializeField] private Transform _cam;
-    private Tile[,] _grid;
+    public Tile[,] grid;
 
-    private void Start()
+    private void Awake() //changed this from Start to Awake. Let me know if this broke something - Nate
     {
         GenerateGrid();
     }
 
     void GenerateGrid()
     {
-        _grid = new Tile[_width, _height]; // this creates a 2d array to store tile objects
+        grid = new Tile[_width, _height]; // this creates a 2d array to store tile objects
         for (int x = 0; x < _width; x++)
         {
             for (int y = 0; y < _height; y++)
@@ -29,7 +29,7 @@ public class GridManager : MonoBehaviour
                 bool walkable = Random.value > 0.2f; //randomly determines if a tile is walkable
                 var isOffset = ((x + y) % 2 == 1);
                 spawnedTile.Init(isOffset,walkable); //call function in the Tile script
-                _grid[x,y] = spawnedTile; // stores tiles in the array
+                grid[x,y] = spawnedTile; // stores tiles in the array
             }
         }
 
@@ -44,7 +44,7 @@ public class GridManager : MonoBehaviour
 
         if (x>=0 && x<_width && y>=0 && y < _height)
         {
-            return _grid[x, y];
+            return grid[x, y];
 
         }
         //Debug.Log($"Out of bounds: ({x}, {y})");

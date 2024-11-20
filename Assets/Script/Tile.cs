@@ -13,6 +13,7 @@ public class Tile : MonoBehaviour
     public void Init(bool isOffset,bool walkable)
     {
         this.walkable = walkable;
+        //if walkable equals false, color equals black, if offset equals false, offset equals sllightly darker blue color
         _renderer.color = walkable ? (isOffset ? _offsetColor : _baseColor) : Color.black; // black represents the blocked tiles 
     }
     
