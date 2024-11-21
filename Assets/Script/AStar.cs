@@ -11,7 +11,7 @@ public class AStarNode //creating a node for each tile that the A* algoritmn wil
     //list to know the nodes adjacent to each node
     public List<int> adjacentPointIDs = new List<int>();
 
-    public AStarNode predecessorNode;
+    public AStarNode predecessorNode = null;
 
     //Distance to nearest block
     public float g;
@@ -75,6 +75,11 @@ public class AStar : MonoBehaviour //search algorthmn. Mono Behavior allows this
 
     void FixedUpdate()
     {
+        foreach (AStarNode aStarNode in graph)
+        {
+            aStarNode.predecessorNode = null;
+        }
+
         uint s = GetPointByPosition(new Vector3(transform.position.x, transform.position.y, 0.0f)); //s for spawn
         uint p = GetPointByPosition(new Vector3(player.position.x, player.position.y, 0.0f)); //p is for player 
 
@@ -243,7 +248,6 @@ public class AStar : MonoBehaviour //search algorthmn. Mono Behavior allows this
                             neighborNode.g = currentG;
                         }
                     }
-
                     else
                     {
                         isNewPath = true;
