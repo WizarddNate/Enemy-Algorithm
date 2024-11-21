@@ -220,7 +220,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 924542b2a83e03049b94816e48bd5263, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  player: {fileID: 1610069036}
   graph: []
 --- !u!1 &170575597
 GameObject:
