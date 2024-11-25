@@ -386,6 +386,7 @@ GameObject:
   - component: {fileID: 306117190}
   - component: {fileID: 306117191}
   - component: {fileID: 306117192}
+  - component: {fileID: 306117193}
   m_Layer: 0
   m_Name: Clive
   m_TagString: Ghost
@@ -473,6 +474,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 1
+  target: {fileID: 1610069032}
 --- !u!61 &306117192
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -518,6 +520,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.75, y: 0.75}
   m_EdgeRadius: 0
+--- !u!114 &306117193
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 306117188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44541e9d913d55440be61a5057e0f04f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timer: {fileID: 0}
 --- !u!1 &308484843
 GameObject:
   m_ObjectHideFlags: 0
@@ -1348,7 +1363,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'timer:'
+  m_text: 'Linear Search Timer:'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1357,8 +1372,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 3692782261
-  m_fontColor: {r: 0.7106918, g: 0.38533, b: 0.1050393, a: 0.8627451}
+    rgba: 3700210175
+  m_fontColor: {r: 1, g: 0.7249496, b: 0.5503144, a: 0.8627451}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1375,8 +1390,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50
-  m_fontSizeBase: 50
+  m_fontSize: 30
+  m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

@@ -8,7 +8,7 @@ public class StopTimer : MonoBehaviour
     public Timer timer;
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Ghost"))
+        if (other.gameObject.CompareTag("Player"))
         {
             //Debug.Log("stop");
             timer.StopTime();

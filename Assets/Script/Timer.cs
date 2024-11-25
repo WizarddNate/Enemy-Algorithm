@@ -23,13 +23,13 @@ public class Timer : MonoBehaviour
         if (running){
             time += Time.deltaTime;
             float sec = (float)time;
-            timerText.text = "Time: "+sec.ToString("F2");
+            timerText.text = "Linear Search Timer: "+sec.ToString("F2");
         }
     }
 
     public void StopTime(){
         running = false;
         float sec = (float)time;
-        timerText.text = "Time: "+time.ToString("F2");
+        timerText.text = "Linear Search Timer: "+time.ToString("F2");
     }
 }
