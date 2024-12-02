@@ -30,6 +30,6 @@ public class Timer : MonoBehaviour
     public void StopTime(){
         running = false;
         float sec = (float)time;
-        timerText.text = "Linear Search Timer: "+time.ToString("F2");
+        timerText.text = "Linear Search Timer: "+sec.ToString("F2");
     }
 }

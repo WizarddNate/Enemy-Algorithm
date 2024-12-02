@@ -9,10 +9,11 @@ public class LinarSearch : MonoBehaviour
     public GameObject target;
     private int playerx;
     private int playery;
+    private Timer linearTime;
+    //Stopwatch stopwatch = new Stopwatch();
 
-
-    int[] xarray = new int[] {1,2,3,4,5,6,7,8,9,10,11,12,13,14}; //array for all x values on the grid
-    int[] yarray = new int[] {1,2,3,4,5,6,7,8,9};  //array for all y valuse on the grid
+    int[] xarray = new int[] {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14}; //array for all x values on the grid
+    int[] yarray = new int[] {0,1,2,3,4,5,6,7,8,9};  //array for all y valuse on the grid
 
     // Start is called before the first frame update
     void Start()
@@ -29,16 +30,23 @@ public class LinarSearch : MonoBehaviour
 
     }
 
+
     bool Linear(int[] xarray, int[]yarray, int xkey, int ykey){  //the linear search
+        //stopwatch.Start();
         for(int x = 0; x<xarray.Length; x++){
             if(xarray[x] == xkey){
                 for(int y = 0; y<yarray.Length; y++){
                     if(yarray[y] == ykey){
                         return true;
+                       
                     }
                 }
             }
         }
+        //stopwatch.Stop();
+        //float pathFindingTime = stopwatch.ElapsedMilliseconds;
+        linearTime.StopTime();
+        //topwatch.Reset();
         return false;
     }
 
@@ -47,6 +55,7 @@ public class LinarSearch : MonoBehaviour
         Vector2 targetPosition = new Vector2(xpos, ypos);
         if(go == true){
             transform.position = Vector2.MoveTowards(transform.position, targetPosition, step);
+          
         }
     }
 
