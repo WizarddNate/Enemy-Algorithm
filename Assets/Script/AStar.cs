@@ -32,8 +32,11 @@ public class AStar : MonoBehaviour //search algorthmn. Mono Behavior allows this
     public List<AStarNode> graph; //graph 
     public float speed = 1.0f;
 
+    //private InkyTimer timerText; //Timer
+
     private void Start()
     {
+        //timerText = FindObjectOfType<InkyTimer>();//Timer text
         GridManager gridManager = GameObject.FindObjectOfType<GridManager>();
 
         foreach (Tile tile in gridManager.grid) //For loop, but instead of iterating through a varible 'x', you iterate through the tiles in the grid array
@@ -195,21 +198,25 @@ public class AStar : MonoBehaviour //search algorthmn. Mono Behavior allows this
 
     List<Vector3> GetPath(uint idFrom, uint idTo)
     {
-        List<uint> searchingSet = new List<uint>();
+        List<uint> searchingSet = new List<uint>(); //stores indexes into the graph
         List<uint> hasSearchedSet = new List<uint>();
         uint graphNodeIndex;
 
         searchingSet.Add(idFrom);
 
-        while (searchingSet.Count > 0)
+        int MAXCOUNTER = 2000; //keeps the while loop from infinetly searching
+        int counter = 0;
+
+        while (searchingSet.Count > 0 && counter < MAXCOUNTER)
         {
+            counter ++;
             uint lowestPath = 0;
 
             for (uint i = 0; i < searchingSet.Count; i++)
             {
                 if (graph[(int)searchingSet[(int)lowestPath]].f > graph[(int)searchingSet[(int)i]].f)
                 {
-                    lowestPath = i;
+                    lowestPath = i; //lowest path = index
                 }
             }
 
@@ -218,6 +225,7 @@ public class AStar : MonoBehaviour //search algorthmn. Mono Behavior allows this
 
             if (idTo == searchingSet[(int)lowestPath])
             {
+                Debug.Log("Path found!");
                 return BuildPath(node);
             }
 
@@ -230,6 +238,7 @@ public class AStar : MonoBehaviour //search algorthmn. Mono Behavior allows this
             {
                 AStarNode neighborNode = graph[neighborIDs[i]];
 
+                Debug.Log("HSS");
                 if (hasSearchedSet.Contains((uint)neighborIDs[i]))
                 {
                     if (graphNodeIndex == neighborIDs[i])

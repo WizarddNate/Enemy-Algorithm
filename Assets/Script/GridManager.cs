@@ -26,7 +26,7 @@ public class GridManager : MonoBehaviour
                 var spawnedTile = Instantiate(_tilePrefab, new Vector3(x, y), Quaternion.identity);
                 spawnedTile.name = $"Tile {x} {y}";
                 spawnedTile.coords = new Vector3(x,y);
-                bool walkable =true; //Random.value > 0.2f; //randomly determines if a tile is walkable
+                bool walkable = Random.value > 0.2f; //randomly determines if a tile is walkable
                 var isOffset = ((x + y) % 2 == 1);
                 spawnedTile.Init(isOffset,walkable); //call function in the Tile script
                 grid[x,y] = spawnedTile; // stores tiles in the array
