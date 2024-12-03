@@ -32,6 +32,8 @@ public class AStar : MonoBehaviour //search algorthmn. Mono Behavior allows this
     public List<AStarNode> graph; //graph 
     public float speed = 1.0f;
 
+    public List<Vector3> points;// = new List<Vector3>();
+
     //private InkyTimer timerText; //Timer
 
     private void Start()
@@ -78,20 +80,23 @@ public class AStar : MonoBehaviour //search algorthmn. Mono Behavior allows this
 
     void FixedUpdate()
     {
+        //start timer
         foreach (AStarNode aStarNode in graph)
         {
+            aStarNode.g = 0;
+            aStarNode.h = 0;
             aStarNode.predecessorNode = null;
         }
 
-        uint s = GetPointByPosition(new Vector3(transform.position.x, transform.position.y, 0.0f)); //s for spawn
-        uint p = GetPointByPosition(new Vector3(player.position.x, player.position.y, 0.0f)); //p is for player 
+        uint c = GetClosestPoint(new Vector3(transform.position.x, transform.position.y, 0.0f)); //c for current index 
+        uint p = GetClosestPoint(new Vector3(player.position.x, player.position.y, 0.0f)); //p is for player 
 
-        List<Vector3> points = new List<Vector3>();
-        points = GetPath(s, p); ///Can do this backwards (player to spawn) to optomize. Later 
+
+        points = GetPath(c, p); ///Can do this backwards (player to spawn) to optomize. Later 
 
         if (points.Count > 0)
         {
-            transform.position = Vector3.MoveTowards(transform.position, points[0], Time.fixedDeltaTime * speed);
+            transform.position = Vector3.MoveTowards(transform.position, points[points.Count-1], Time.fixedDeltaTime * speed);
         }
     }
 
@@ -109,17 +114,18 @@ public class AStar : MonoBehaviour //search algorthmn. Mono Behavior allows this
         float minDistance = float.MaxValue; //set float to its largest value
         float distance = 0.0f;
 
-        for (int i = 1; i < graph.Count; i++)
+        for (int i = 0; i < graph.Count; i++)
         {
             distance = Vector3.Distance(position, graph[i].position);
 
-            if (minDistance < distance)
+            if (minDistance > distance)
             {
-                id = 1;
+                id = (uint)i;
                 minDistance = distance;
             }
 
         }
+        //end timer
         return id;
     }
 
@@ -140,36 +146,14 @@ public class AStar : MonoBehaviour //search algorthmn. Mono Behavior allows this
             return;
         }
 
-        if (idFrom <= graph.Count)
+        if (graph[(int)idFrom].adjacentPointIDs.Contains((int)idTo) == false)
         {
             graph[(int)idFrom].adjacentPointIDs.Add((int)idTo);
         }
-        if (idTo <= graph.Count)
+        if (graph[(int)idTo].adjacentPointIDs.Contains((int)idFrom) == false)
         {
             graph[(int)idTo].adjacentPointIDs.Add((int)idFrom);
         }
-
-    }
-
-    bool ArePointsConnected(uint idFrom, uint idTo) //here for debugging
-    {
-        if (graph.Count <= idFrom)
-        {
-            Debug.Log("ERROR: AStar, ArePointsConnected idFrom has not been added to the graph!");
-        }
-        if (graph.Count <= idTo)
-        {
-            Debug.Log("ERROR: AStar, ArePointsConnected idTo has not been added to the graph!");
-        }
-
-        for (int i = 0; i < graph[(int)idFrom].adjacentPointIDs.Count; i++)
-        {
-            if (graph[(int)idFrom].adjacentPointIDs[i] == idTo)
-            {
-                return true;
-            }
-        }
-        return false;
     }
 
     bool ValidPoint(Vector3 position)
@@ -189,7 +173,7 @@ public class AStar : MonoBehaviour //search algorthmn. Mono Behavior allows this
 
         while (currentNode.predecessorNode != null)
         {
-            path.Prepend(currentNode.position);
+            path.Add(currentNode.position);
             currentNode = currentNode.predecessorNode;
         }
         return path;
@@ -204,12 +188,12 @@ public class AStar : MonoBehaviour //search algorthmn. Mono Behavior allows this
 
         searchingSet.Add(idFrom);
 
-        int MAXCOUNTER = 2000; //keeps the while loop from infinetly searching
+        int MAXCOUNTER = 500; //keeps the while loop from infinetly searching
         int counter = 0;
 
         while (searchingSet.Count > 0 && counter < MAXCOUNTER)
         {
-            counter ++;
+            counter++;
             uint lowestPath = 0;
 
             for (uint i = 0; i < searchingSet.Count; i++)
@@ -225,12 +209,11 @@ public class AStar : MonoBehaviour //search algorthmn. Mono Behavior allows this
 
             if (idTo == searchingSet[(int)lowestPath])
             {
-                Debug.Log("Path found!");
                 return BuildPath(node);
             }
 
             hasSearchedSet.Add(searchingSet[(int)lowestPath]);
-            searchingSet.Remove(lowestPath);
+            searchingSet.RemoveAt((int)lowestPath);
 
             List<int> neighborIDs = node.adjacentPointIDs;
 
@@ -238,8 +221,8 @@ public class AStar : MonoBehaviour //search algorthmn. Mono Behavior allows this
             {
                 AStarNode neighborNode = graph[neighborIDs[i]];
 
-                Debug.Log("HSS");
-                if (hasSearchedSet.Contains((uint)neighborIDs[i]))
+
+                if (hasSearchedSet.Contains((uint)neighborIDs[i]) == false)
                 {
                     if (graphNodeIndex == neighborIDs[i])
                     {
@@ -272,6 +255,7 @@ public class AStar : MonoBehaviour //search algorthmn. Mono Behavior allows this
                 }
             }
         }
+        Debug.Log("Counter: " + counter + " searchingSet.Count: " + searchingSet.Count);
         return new List<Vector3>(); //empty list incase the ghost is right next to the target
     }
 
