@@ -39,6 +39,7 @@ public class GridManager : MonoBehaviour
     //gets a tile at a specific position
     public Tile GetTileAtPosition(Vector3 position)
     {
+        
         int x = Mathf.RoundToInt(position.x);
         int y = Mathf.RoundToInt(position.y);
 

@@ -1,43 +1,53 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
+
 
 public class DepthFirstSearch : MonoBehaviour
 {
     public float speed = 1f;
-    private Vector3 nextPosition;
-    private GridManager gridManager;
-    private List<Vector3> playerPath = new List<Vector3>();
+    public Vector3 nextPosition;
+    public GridManager gridManager;
+    public List<Vector3> playerPath = new List<Vector3>();
+    private PinkieTimer timerText;
 
-    private void Start()
+
+
+    public void Start()
     {
-        gridManager = FindObjectOfType<GridManager>(); //finds the gridmanager in the scene
-
+        gridManager = FindObjectOfType<GridManager>();
+        timerText = FindObjectOfType<PinkieTimer>();
     }
-    private void Update()
+
+    public void Update()
     {
+
         if (playerPath.Count == 0)
         {
-            
+
             Vector3 playerPosition = GameObject.FindWithTag("Player").transform.position;
+            
             playerPath = FindPath(transform.position, playerPosition);
+            
         }
 
         if (playerPath.Count > 0)
         {
-            //move the enemy to the next position
             nextPosition = playerPath[0];
             transform.position = Vector3.MoveTowards(transform.position, nextPosition, speed * Time.deltaTime);
-            // checks if we've reached the next position
-            if (Vector3.Distance(transform.position, nextPosition) < 0.01f)
-            {
-                playerPath.RemoveAt(0); //remove the reached position
 
+            if (Vector3.Distance(transform.position, nextPosition) < 0.1f)
+            {
+                playerPath.RemoveAt(0);
             }
         }
     }
-    private List<Vector3> FindPath(Vector3 start, Vector3 goal)
+
+    public List<Vector3> FindPath(Vector3 start, Vector3 goal)
     {
+        Stopwatch stopwatch = new Stopwatch();
+        stopwatch.Start();
         List<Vector3> path = new List<Vector3>();
 
         Tile startTile = gridManager.GetTileAtPosition(start);
@@ -45,12 +55,13 @@ public class DepthFirstSearch : MonoBehaviour
 
         if (startTile == null || goalTile == null || !startTile.walkable || !goalTile.walkable)
         {
-            return path; // return an empty path if either the start or goal is invalid
+            return path;
         }
+
         Stack<Vector3> stack = new Stack<Vector3>();
         stack.Push(start);
 
-        HashSet<Vector3> visited = new HashSet<Vector3>();
+        HashSet<Vector3> visited = new HashSet<Vector3>(new Vector3EqualityComparer());
         visited.Add(start);
 
         Dictionary<Vector3, Vector3> cameFrom = new Dictionary<Vector3, Vector3>();
@@ -59,19 +70,24 @@ public class DepthFirstSearch : MonoBehaviour
         {
             Vector3 current = stack.Pop();
 
-            if (current == goal)
+            if (Vector3.Distance(current, goal) < 0.1f) // Goal check with tolerance
             {
-                //reconstruct the path when goal is met
                 while (cameFrom.ContainsKey(current))
                 {
-                    path.Insert(0, current); 
+                    path.Insert(0, current);
                     current = cameFrom[current];
                 }
-                path.Insert(0, start); // includes start position
+                path.Insert(0, start);
                 break;
             }
-            //checks each direction
-            foreach (Vector3 direction in new Vector3[] { Vector3.up, Vector3.down, Vector3.left, Vector3.right })
+
+            foreach (Vector3 direction in new Vector3[]
+            {
+                new Vector3(0, 1, 0), // Up
+                new Vector3(0, -1, 0), // Down
+                new Vector3(-1, 0, 0), // Left
+                new Vector3(1, 0, 0) // Right
+            })
             {
                 Vector3 neighbor = current + direction;
 
@@ -80,10 +96,27 @@ public class DepthFirstSearch : MonoBehaviour
                 {
                     stack.Push(neighbor);
                     visited.Add(neighbor);
-                    cameFrom[neighbor] = current; //tracks path
+                    cameFrom[neighbor] = current;
                 }
             }
         }
-        return path; // returns the reconstructec path
+        stopwatch.Stop();
+        float pathFindingTime = stopwatch.ElapsedMilliseconds;
+        timerText.ChangeTime(pathFindingTime);
+        return path;
+    }
+
+    // Equality comparer for Vector3 to handle floating-point inaccuracies
+    public class Vector3EqualityComparer : IEqualityComparer<Vector3>
+    {
+        public bool Equals(Vector3 a, Vector3 b)
+        {
+            return Vector3.Distance(a, b) < 0.1f;
+        }
+
+        public int GetHashCode(Vector3 obj)
+        {
+            return obj.ToString().GetHashCode();
+        }
     }
 }
