@@ -20,11 +20,11 @@ public class LinearTimer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        timerText.text = "Linear Search Timer: "+time.ToString("F2");
+        timerText.text = "Linear Search Timer: "+time.ToString("F2"); //display the time in the ui
     }
 
     public void StopTime(float timegone){
-        time = timegone;
+        time = timegone;            //grab the time from the linear search
         //Debug.log(timegone);
     }
 }

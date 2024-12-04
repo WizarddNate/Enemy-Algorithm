@@ -6,6 +6,7 @@ public class Tile : MonoBehaviour
 {
     [SerializeField] private Color _baseColor, _offsetColor;
     [SerializeField] private SpriteRenderer _renderer;
+    //public GameObject nonWalkPre;
 
     public bool walkable = true; //this tells the dfs algorithm if a tile is walkable or not
     public Vector3 coords;
@@ -15,6 +16,7 @@ public class Tile : MonoBehaviour
         this.walkable = walkable;
         //if walkable equals false, color equals black, if offset equals false, offset equals sllightly darker blue color
         _renderer.color = walkable ? (isOffset ? _offsetColor : _baseColor) : Color.black; // black represents the blocked tiles 
+        //Instantiate(nonWalkPre, new Vector3(x,y), Quaternion.identity);
     }
     
 }
