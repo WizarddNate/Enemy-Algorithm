@@ -1,5 +1,6 @@
 README
-
+NOTES: Tiles that are black are not walkable for the ghost, so they avoid them. Move the player by using the arrow keys.
+Sometimes a wall spawns on top of a ghost or the player. This prevents the algorithm from working so when it happens just rerun the scene and should fix it.
 
 Steps to Open the project
 
