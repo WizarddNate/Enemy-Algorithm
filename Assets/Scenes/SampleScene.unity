@@ -850,6 +850,7 @@ GameObject:
   - component: {fileID: 1216304569}
   - component: {fileID: 1216304571}
   - component: {fileID: 1216304570}
+  - component: {fileID: 1216304572}
   m_Layer: 5
   m_Name: PinkieTimer
   m_TagString: Untagged
@@ -973,6 +974,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1216304568}
   m_CullTransparentMesh: 1
+--- !u!114 &1216304572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1216304568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa514aedc567bbf418da6c4e23478364, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timerText: {fileID: 1216304570}
+  timeElapsed: 0
 --- !u!212 &1337750645 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 1625226334798908789, guid: e97231cdbd8f592489105216dce75554, type: 3}
@@ -989,7 +1004,6 @@ GameObject:
   - component: {fileID: 1468386217}
   - component: {fileID: 1468386218}
   - component: {fileID: 1468386219}
-  - component: {fileID: 1468386220}
   m_Layer: 0
   m_Name: Pinkie
   m_TagString: Ghost
@@ -1077,6 +1091,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 1
+  nextPosition: {x: 0, y: 0, z: 0}
+  gridManager: {fileID: 0}
+  playerPath: []
 --- !u!1 &1519753999
 GameObject:
   m_ObjectHideFlags: 0
