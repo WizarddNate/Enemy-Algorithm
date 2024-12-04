@@ -10,12 +10,12 @@ public class LinarSearch : MonoBehaviour
     public GameObject target;
     private int playerx;
     private int playery;
-    private LinearTimer linearTime;
-    Stopwatch timerr = new Stopwatch();
-    //Stopwatch stopwatch = new Stopwatch();
+    private LinearTimer linearTime; //connect search with the timer script
+    Stopwatch timerr = new Stopwatch(); //stopwatch to count how long the search runs
+    
 
     int[] xarray = new int[] {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14}; //array for all x values on the grid
-    int[] yarray = new int[] {0,1,2,3,4,5,6,7,8,9};  //array for all y valuse on the grid
+    int[] yarray = new int[] {0,1,2,3,4,5,6,7,8,9};                //array for all y valuse on the grid
 
     // Start is called before the first frame update
     void Start()
@@ -33,8 +33,9 @@ public class LinarSearch : MonoBehaviour
     }
 
 
+
     bool Linear(int[] xarray, int[]yarray, int xkey, int ykey){  //the linear search
-        timerr.Start();
+        timerr.Start();             //start timer
         for(int x = 0; x<xarray.Length; x++){
             if(xarray[x] == xkey){
                 for(int y = 0; y<yarray.Length; y++){
@@ -45,9 +46,9 @@ public class LinarSearch : MonoBehaviour
                 }
             }
         }
-        timerr.Stop();
+        timerr.Stop();          //stop timer when search is over
         float pathFindingTime = timerr.ElapsedMilliseconds;
-        linearTime.StopTime(pathFindingTime);
+        linearTime.StopTime(pathFindingTime); //send time to timer script to display in ui
         timerr.Reset();
         return false;
     }
