@@ -223,6 +223,7 @@ MonoBehaviour:
   player: {fileID: 1610069036}
   graph: []
   speed: 1
+  points: []
 --- !u!1 &170575597
 GameObject:
   m_ObjectHideFlags: 0
@@ -1663,8 +1664,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1b17d0c04abe8747bf3a773791d2bcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timerText: {fileID: 1979686099}
-  timeElapsed: 0
+  _text: {fileID: 1979686099}
 --- !u!1001 &8465143678379587757
 PrefabInstance:
   m_ObjectHideFlags: 0

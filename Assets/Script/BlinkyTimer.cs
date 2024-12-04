@@ -1,23 +1,37 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using TMPro;
 using UnityEngine;
 
 public class BlinkyTimer : MonoBehaviour
 {
-    public TMP_Text timerText;
-    public float timeElapsed;
+    private bool timerActive;
+    private float currentTime;
+    [SerializeField] private TMP_Text _text;
     void Start()
     {
-        timerText = gameObject.GetComponent<TMP_Text>();
+        currentTime = 0;
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        timerText.text = "A* Time: " + timeElapsed.ToString("F2");
+        if (timerActive)
+        {
+            currentTime = currentTime + Time.fixedTime;
+        }
+
+        TimeSpan time  = TimeSpan.FromSeconds(currentTime);
+        //add text to our TMP text
+        _text.text = "A* Time: " + time.Seconds.ToString() + ":"  + time.Milliseconds.ToString();
     }
-    public void ChangeTime(float time)
+    public void StartTimer()
     {
-        timeElapsed = time;
+        timerActive = true;
+    }
+
+    public void StopTimer()
+    {
+        timerActive = false;
     }
 }

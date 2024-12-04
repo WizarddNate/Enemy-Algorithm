@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 [System.Serializable]
 public class AStarNode //creating a node for each tile that the A* algoritmn will loop through
@@ -34,11 +36,12 @@ public class AStar : MonoBehaviour //search algorthmn. Mono Behavior allows this
 
     public List<Vector3> points;// = new List<Vector3>();
 
-    //private InkyTimer timerText; //Timer
+    private BlinkyTimer timerUpdate; //stopwatch
 
     private void Start()
     {
-        //timerText = FindObjectOfType<InkyTimer>();//Timer text
+        // BlinkyTimer blinkyTimer = GameObject.FindObjectOfType<BlinkyTimer>(); //???
+
         GridManager gridManager = GameObject.FindObjectOfType<GridManager>();
 
         foreach (Tile tile in gridManager.grid) //For loop, but instead of iterating through a varible 'x', you iterate through the tiles in the grid array
@@ -48,7 +51,8 @@ public class AStar : MonoBehaviour //search algorthmn. Mono Behavior allows this
                 AddPoint(tile.coords);
             }
         }
-
+        
+        //looks big and scary, but this is just the process of making a node for each point on the graph
         float z = 0.0f; //z should not be involved in the process as this is a 2D grid
         foreach (AStarNode aStarNode in graph)
         {
@@ -80,7 +84,9 @@ public class AStar : MonoBehaviour //search algorthmn. Mono Behavior allows this
 
     void FixedUpdate()
     {
-        //start timer
+        //start stopwatch 
+        //timerUpdate.StartTimer();
+
         foreach (AStarNode aStarNode in graph)
         {
             aStarNode.g = 0;
@@ -92,7 +98,7 @@ public class AStar : MonoBehaviour //search algorthmn. Mono Behavior allows this
         uint p = GetClosestPoint(new Vector3(player.position.x, player.position.y, 0.0f)); //p is for player 
 
 
-        points = GetPath(c, p); ///Can do this backwards (player to spawn) to optomize. Later 
+        points = GetPath(c, p); 
 
         if (points.Count > 0)
         {
@@ -125,7 +131,10 @@ public class AStar : MonoBehaviour //search algorthmn. Mono Behavior allows this
             }
 
         }
-        //end timer
+        //end stopwatch
+        //timerUpdate.StopTimer();
+
+
         return id;
     }
 
@@ -166,7 +175,7 @@ public class AStar : MonoBehaviour //search algorthmn. Mono Behavior allows this
         return false;
     }
 
-    List<Vector3> BuildPath(AStarNode node)
+    List<Vector3> BuildPath(AStarNode node) //builds a path out of each node
     {
         List<Vector3> path = new List<Vector3>();
         AStarNode currentNode = node;
@@ -188,7 +197,7 @@ public class AStar : MonoBehaviour //search algorthmn. Mono Behavior allows this
 
         searchingSet.Add(idFrom);
 
-        int MAXCOUNTER = 500; //keeps the while loop from infinetly searching
+        int MAXCOUNTER = 500; //keeps the while loop from infinetly searching. This shouldnt ever be needed, it's just a safeguard. 
         int counter = 0;
 
         while (searchingSet.Count > 0 && counter < MAXCOUNTER)
@@ -255,7 +264,6 @@ public class AStar : MonoBehaviour //search algorthmn. Mono Behavior allows this
                 }
             }
         }
-        Debug.Log("Counter: " + counter + " searchingSet.Count: " + searchingSet.Count);
         return new List<Vector3>(); //empty list incase the ghost is right next to the target
     }
 
