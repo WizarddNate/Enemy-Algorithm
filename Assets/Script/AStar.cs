@@ -45,7 +45,7 @@ public class AStar : MonoBehaviour //search algorthmn. Mono Behavior allows this
         GridManager gridManager = GameObject.FindObjectOfType<GridManager>();
 
         //start stopwatch 
-        timerUpdate.StartTimer();
+
 
         foreach (Tile tile in gridManager.grid) //For loop, but instead of iterating through a varible 'x', you iterate through the tiles in the grid array
         {
@@ -87,7 +87,8 @@ public class AStar : MonoBehaviour //search algorthmn. Mono Behavior allows this
 
     void FixedUpdate()
     {
-
+        Stopwatch stopwatch = new Stopwatch();
+        stopwatch.Start();
 
         foreach (AStarNode aStarNode in graph)
         {
@@ -99,8 +100,14 @@ public class AStar : MonoBehaviour //search algorthmn. Mono Behavior allows this
         uint c = GetClosestPoint(new Vector3(transform.position.x, transform.position.y, 0.0f)); //c for current index 
         uint p = GetClosestPoint(new Vector3(player.position.x, player.position.y, 0.0f)); //p is for player 
 
+        
+        
+        points = GetPath(c, p);
 
-        points = GetPath(c, p); 
+        stopwatch.Stop();
+        float pathFindingTime = stopwatch.ElapsedMilliseconds;
+        timerUpdate.ChangeTime(pathFindingTime);
+        //UnityEngine.Debug.Log($"A {pathFindingTime:}");
 
         if (points.Count > 0)
         {
@@ -134,9 +141,8 @@ public class AStar : MonoBehaviour //search algorthmn. Mono Behavior allows this
 
         }
         //end stopwatch
-        timerUpdate.StopTimer();
 
-
+        
         return id;
     }
 
@@ -193,6 +199,8 @@ public class AStar : MonoBehaviour //search algorthmn. Mono Behavior allows this
 
     List<Vector3> GetPath(uint idFrom, uint idTo)
     {
+        
+
         List<uint> searchingSet = new List<uint>(); //stores indexes into the graph
         List<uint> hasSearchedSet = new List<uint>();
         uint graphNodeIndex;
@@ -266,6 +274,8 @@ public class AStar : MonoBehaviour //search algorthmn. Mono Behavior allows this
                 }
             }
         }
+        
+        
         return new List<Vector3>(); //empty list incase the ghost is right next to the target
     }
 
