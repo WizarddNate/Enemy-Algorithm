@@ -40,9 +40,12 @@ public class AStar : MonoBehaviour //search algorthmn. Mono Behavior allows this
 
     private void Start()
     {
-        // BlinkyTimer blinkyTimer = GameObject.FindObjectOfType<BlinkyTimer>(); //???
+        timerUpdate = FindObjectOfType<BlinkyTimer>(); //???
 
         GridManager gridManager = GameObject.FindObjectOfType<GridManager>();
+
+        //start stopwatch 
+        timerUpdate.StartTimer();
 
         foreach (Tile tile in gridManager.grid) //For loop, but instead of iterating through a varible 'x', you iterate through the tiles in the grid array
         {
@@ -84,8 +87,7 @@ public class AStar : MonoBehaviour //search algorthmn. Mono Behavior allows this
 
     void FixedUpdate()
     {
-        //start stopwatch 
-        //timerUpdate.StartTimer();
+
 
         foreach (AStarNode aStarNode in graph)
         {
@@ -132,7 +134,7 @@ public class AStar : MonoBehaviour //search algorthmn. Mono Behavior allows this
 
         }
         //end stopwatch
-        //timerUpdate.StopTimer();
+        timerUpdate.StopTimer();
 
 
         return id;

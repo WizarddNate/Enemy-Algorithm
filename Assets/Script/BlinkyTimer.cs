@@ -14,11 +14,11 @@ public class BlinkyTimer : MonoBehaviour
         currentTime = 0;
     }
 
-    void FixedUpdate()
+    void Update()
     {
         if (timerActive)
         {
-            currentTime = currentTime + Time.fixedTime;
+            currentTime = currentTime + Time.deltaTime;
         }
 
         TimeSpan time  = TimeSpan.FromSeconds(currentTime);

@@ -45,7 +45,7 @@ public class LinarSearch : MonoBehaviour
         }
         //stopwatch.Stop();
         //float pathFindingTime = stopwatch.ElapsedMilliseconds;
-        linearTime.StopTime();
+        //linearTime.StopTime();
         //topwatch.Reset();
         return false;
     }
