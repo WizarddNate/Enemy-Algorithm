@@ -46,3 +46,28 @@ To See the code
 	All scripts with Timer are just to display how long it takes to run
 
 If you don't want to use Unity to see the code, you can just find the project in your files and navigate to the scripts folder to open them. The only scripts that pertain to how the algorithms run are the ones mentioned above
+
+
+To Increase the Grid Size
+
+1. In the hierarchy on the right side of the menu there a bunch of cube icons. One of them has Grid Manager by it click it.
+
+2. It should open in the inspector and there is Grid Manager (Script). There should be width 15 and length 10. you can just increase those values and the grid will scale accordingly
+
+This will give a better view of how long each of the algorithms take as the current size is just small enough that the algorithms can swiftly process it
+
+
+
+To limit which algorithm is running
+
+1. In the hierarchy there is another little cube icon with Ghost next to it click it and it will expand to show all the ghost.
+
+2. The algorithms attached to each are as follows:
+		Inky is Breadth First Search
+		Blinky is A*
+		Pinkie is Depth Fist Search
+		Clive is Linear Search
+
+3. click the ghost that represents the algorithm you DO NOT want to see.
+
+4. It will pop up in the inspector and at the top by the ghost's name there will a box with a checkmark. click it to uncheck it and that algorithm won't run the next time.

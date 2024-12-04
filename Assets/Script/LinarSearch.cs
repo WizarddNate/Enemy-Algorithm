@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Diagnostics;
 
 public class LinarSearch : MonoBehaviour
 {
@@ -9,7 +10,8 @@ public class LinarSearch : MonoBehaviour
     public GameObject target;
     private int playerx;
     private int playery;
-    private Timer linearTime;
+    private LinearTimer linearTime;
+    Stopwatch timerr = new Stopwatch();
     //Stopwatch stopwatch = new Stopwatch();
 
     int[] xarray = new int[] {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14}; //array for all x values on the grid
@@ -32,7 +34,7 @@ public class LinarSearch : MonoBehaviour
 
 
     bool Linear(int[] xarray, int[]yarray, int xkey, int ykey){  //the linear search
-        //stopwatch.Start();
+        timerr.Start();
         for(int x = 0; x<xarray.Length; x++){
             if(xarray[x] == xkey){
                 for(int y = 0; y<yarray.Length; y++){
@@ -43,10 +45,10 @@ public class LinarSearch : MonoBehaviour
                 }
             }
         }
-        //stopwatch.Stop();
-        //float pathFindingTime = stopwatch.ElapsedMilliseconds;
-        //linearTime.StopTime();
-        //topwatch.Reset();
+        timerr.Stop();
+        float pathFindingTime = timerr.ElapsedMilliseconds;
+        linearTime.StopTime(pathFindingTime);
+        timerr.Reset();
         return false;
     }
 
